@@ -1,9 +1,54 @@
 # это файл для классов доступа к данным (Data Access Object). Здесь должен быть класс с методами доступа к данным
 # здесь в методах можно построить сложные запросы к БД
+from dao.model.movie import Movie
 
-# Например
 
-class BookDAO:
-    def get_all_books(self):
-        books = Book.query.all()
-        return
+class MovieDAO:
+    def __init__(self, session):
+        self.session = session
+
+    def get_all_movies(self):
+        return self.session.query(Movie).all()
+
+    def get_movies_by_director(self, dir_id):
+        return self.session.query(Movie).filter(Movie.director_id == dir_id).all()
+
+    def get_movies_by_genre(self, gen_id):
+        return self.session.query(Movie).filter(Movie.genre_id == gen_id).all()
+
+    def get_movies_by_year(self, year):
+        return self.session.query(Movie).filter(Movie.year == year).all()
+
+    def get_one_movie(self, mov_id):
+        return self.session.query(Movie).get(mov_id)
+
+    def create_movie(self, data):
+        new_movie = Movie(**data)
+
+        self.session.add(new_movie)
+        self.session.commit()
+
+        return new_movie
+
+    def update_movie(self, data):
+        mov_id = data.get('id')
+        movie = self.get_one_movie(mov_id)
+
+        movie.title = data.get('title')
+        movie.description = data.get('description')
+        movie.trailer = data.get('trailer')
+        movie.year = data.get('year')
+        movie.rating = data.get('rating')
+        movie.genre_id = data.get('genre_id')
+        movie.director_id = data.get('director_id')
+
+        self.session.add(movie)
+        self.session.commit()
+
+        return movie
+
+    def delete_movie(self, mov_id):
+        movie = self.get_one_movie(mov_id)
+
+        self.session.delete(movie)
+        self.session.commit()
