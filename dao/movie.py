@@ -30,18 +30,7 @@ class MovieDAO:
 
         return new_movie
 
-    def update_movie(self, data):
-        mov_id = data.get('id')
-        movie = self.get_one_movie(mov_id)
-
-        movie.title = data.get('title')
-        movie.description = data.get('description')
-        movie.trailer = data.get('trailer')
-        movie.year = data.get('year')
-        movie.rating = data.get('rating')
-        movie.genre_id = data.get('genre_id')
-        movie.director_id = data.get('director_id')
-
+    def update_movie(self, movie):
         self.session.add(movie)
         self.session.commit()
 
