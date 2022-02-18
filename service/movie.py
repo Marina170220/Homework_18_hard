@@ -4,10 +4,10 @@
 
 # Пример
 
-# class BookService:
-#
-#     def __init__(self, book_dao: BookDAO):
-#         self.book_dao = book_dao
-#
-#     def get_books(self) -> List["Book"]:
-#         return self.book_dao.get_books()
+class BookService:
+
+    def __init__(self, book_dao: BookDAO):
+        self.book_dao = book_dao
+
+    def get_books(self) -> List["Book"]:
+        return self.book_dao.get_books()
